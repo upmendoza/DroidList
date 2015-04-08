@@ -1,0 +1,7 @@
+<resources>
+
+    <string-array name="texto_spins">
+        <item>Introduzca nuevo elemento</item>
+    </string-array>
+
+</resources>

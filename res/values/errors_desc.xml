@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="err_duplicado">La introducción de ese valor crearía datos duplicados</string>
+    <string name="err_1">No hay estudiantes en ésta lista</string>
+    <string name="err_2">Bienvenido, para iniciar con la toma de lista seleccione primeramente el grupo y
+        posteriormente la asignatura
+    </string>
+</resources>

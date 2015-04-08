@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".Main" >
+
+      <item android:id="@+id/insert"
+            android:icon="@drawable/ic_action_add_person"
+            android:title="agregar"
+            android:showAsAction="ifRoom"/>
+
+      <item android:id="@+id/update"
+            android:icon="@drawable/ic_action_upd_person"
+            android:title="actualizar"
+            android:showAsAction="ifRoom"/>
+</menu>

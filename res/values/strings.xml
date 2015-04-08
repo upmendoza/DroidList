@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DroidList</string>
+    <string name="vacia">No hay estudiantes en ésta lista</string>
+    <string name="asignaturas">Asignaturas</string>
+    <string name="saludo">Bienvenido, para iniciar con la toma de lista seleccione primeramente el grupo y
+        posteriormente la asignatura
+    </string>
+
+</resources>
