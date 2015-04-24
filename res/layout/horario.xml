@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:id="@+id/layHorario" android:padding="10dp"
+                android:background="@drawable/background">
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+            android:src="@drawable/asignaturas"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ITS 1-8"
+            android:id="@+id/txtGrupo"
+            android:textColor="@color/gris" android:textStyle="bold" android:textSize="36dp"
+            android:layout_alignParentTop="true" android:layout_toRightOf="@+id/imageView" android:paddingLeft="10dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Horario"
+            android:id="@+id/txtHorario"
+            android:textSize="24dp" android:paddingLeft="10dp"
+            android:layout_below="@+id/imageView"
+            android:layout_alignParentLeft="true" android:layout_alignParentRight="true" android:gravity="right"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Programación"
+              android:id="@+id/txtAsignatura" android:textColor="@color/gris" android:textStyle="bold"
+              android:textSize="36dp" android:layout_below="@+id/txtGrupo" android:layout_alignLeft="@+id/txtGrupo"
+              android:paddingLeft="10dp"/>
+    <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lstDiasHoras"
+            android:background="@color/hielo"
+            android:layout_alignParentLeft="true" android:layout_below="@+id/txtHorario"/>
+</RelativeLayout>

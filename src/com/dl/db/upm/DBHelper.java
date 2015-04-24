@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "list_data";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     public boolean DATABASE_EMPTY = true;
 
     public boolean isEMPTY() {

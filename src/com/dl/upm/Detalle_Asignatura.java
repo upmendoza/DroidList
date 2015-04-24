@@ -6,8 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 import com.dl.db.upm.DBAdapter;
 /**
  * Created by Yoset on 03/12/2014.
@@ -47,23 +46,43 @@ public class Detalle_Asignatura extends Activity
         setContentView(R.layout.agregar_asignaturas);
         dAsignaturas = new DBAdapter(this);
         Bundle extras = getIntent().getExtras(); //RECUPERANDO EL ID EN CASO DE ACTUALIZACI�N
+        DBAdapter dGrupos = new DBAdapter(this);
+        dGrupos.open();
+        Cursor cGrupos = dGrupos.fetchAll_grupos();
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this,android.R.layout.simple_spinner_item,cGrupos, new String[] {dGrupos.GP_NOMBRE, dGrupos.GP_ID},new int[] {android.R.id.text1,android.R.id.text2});
+        cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner spin = (Spinner) findViewById(R.id.spiGrupo);
+        spin.setAdapter(cursorAdapter);
+
         if (extras == null) esAlta = true;
         else {
             esAlta = false;
             dAsignaturas.open();
-            IDAs=extras.getString("IDAsignatura");
+            IDAs = extras.getString("IDAsignatura");
             cAsignatura = dAsignaturas.fetch_asignaturas(IDAs);
             cAsignatura.moveToFirst();
             EditText et_asignatura = (EditText) findViewById(R.id.asignatura_txt);
             et_asignatura.setText(cAsignatura.getString(1));
-            dAsignaturas.close();
+            Cursor tmp = dGrupos.fetch_grupos(cAsignatura.getString(2));
+            tmp.moveToFirst();
+            for (int i = 0; i < spin.getCount(); i++) {
+                if (tmp.getInt(0) == spin.getItemIdAtPosition(i)) {
+                    spin.setSelection(i);
+                    break;
+                }
+                dGrupos.close();
+                dAsignaturas.close();
+            }
         }
-    }
+
+        }
 
     public void alta(){
         dAsignaturas.open();
         //los datos de los campos son convertidos a tipo string para poder manejarlos y mandarlos a la bd.
         EditText et_asignatura = (EditText) findViewById (R.id.asignatura_txt);
+        Spinner spin = (Spinner) findViewById(R.id.spiGrupo);
+        int valor = ((Cursor) spin.getSelectedItem()).getInt(0);
         // se realiza una serie de validaciones, esto es para saber si los campos estan vacios, NOTA: la validacion de DATOS DUPLICADOS se realiza en la clase DBAdapter
         // cuando quieres insertar
         if (et_asignatura.getText().toString().equals("")){
@@ -71,10 +90,10 @@ public class Detalle_Asignatura extends Activity
         }else {
             //se envia a la base de datos los datos del grupo y se cierra la conexion
             if (esAlta) {
-                dAsignaturas.creaAsignatura(et_asignatura.getText().toString());
+                dAsignaturas.creaAsignatura(et_asignatura.getText().toString(),valor);
                 et_asignatura.setText("");
             }
-            else dAsignaturas.updateAsignatura(IDAs,et_asignatura.getText().toString());
+            else dAsignaturas.updateAsignatura(IDAs,et_asignatura.getText().toString(),valor);
             dAsignaturas.close();
 
         }

@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent" android:background="@color/hielo">
 
     <TextView
             android:layout_width="wrap_content"
@@ -22,4 +22,17 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
             />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/txtGrupo" android:layout_below="@+id/NombreAsignatura"
+            android:layout_alignLeft="@+id/NombreAsignatura" android:layout_marginLeft="10dp"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgHorario" android:layout_alignTop="@+id/NombreAsignatura"
+            android:layout_alignParentRight="true" android:layout_alignBottom="@+id/foto"
+            android:src="@drawable/ic_horario_32" android:layout_marginRight="10dp"/>
 </RelativeLayout>

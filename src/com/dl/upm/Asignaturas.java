@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class Asignaturas extends Activity implements SimpleGestureListener{
 
-    DBAdapter Asignaturas;
+    DBAdapter BD;
     Cursor dataAs;
     String[] array = new String[200];
     ListView lista;
@@ -40,7 +40,7 @@ public class Asignaturas extends Activity implements SimpleGestureListener{
                 startActivity(i);
                 break;
             case R.id.update:
-                i.putExtra("IDAsignatura",id_consulta);
+                i.putExtra("IDAsignatura",Long.valueOf(id_consulta));
                 startActivity(i);
                 break;
         }
@@ -69,9 +69,9 @@ public class Asignaturas extends Activity implements SimpleGestureListener{
                 dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialogo1, int id) {
-                        Asignaturas.open();
-                        Asignaturas.elimina(base, Integer.parseInt(id_consulta));
-                        Asignaturas.close();
+                        BD.open();
+                        BD.elimina(base, Integer.parseInt(id_consulta));
+                        BD.close();
                         onRestart();
                         Toast.makeText(getApplicationContext(), "Se ha eliminado la Asignatura Seleccionada", Toast.LENGTH_LONG).show();
                     }
@@ -100,20 +100,27 @@ public class Asignaturas extends Activity implements SimpleGestureListener{
     }
 
     void llenaLista (){
-        Asignaturas = new DBAdapter(this);
-        Asignaturas.open();
-        dataAs = Asignaturas.fetchAll_asignatura();
+        BD = new DBAdapter(this);
+        BD.open();
+        dataAs = BD.fetchAll_asignatura();
 
         lista = (ListView) findViewById(R.id.listItems);
         datosassign = new ArrayList<ListaAsignaturas>();
         int i=0;
         while (dataAs.moveToNext()){
             array[i]=dataAs.getString(0);
-            list = new ListaAsignaturas(getResources().getDrawable(R.drawable.im_menu_asignatura),dataAs.getString(1));
+            Cursor cGpo= BD.fetch_grupos(dataAs.getString(2));
+            cGpo.moveToFirst(); String gpo = cGpo.getString(1);
+            list = new ListaAsignaturas(getResources().getDrawable(R.drawable.im_menu_asignatura),dataAs.getString(1), gpo,dataAs.getInt(0));
             datosassign.add(list);
             i++;
         }
-        adapterAsignaturas adp = new adapterAsignaturas(this, datosassign);
+        adapterAsignaturas adp = new adapterAsignaturas(this, datosassign, new BtnClickListener() {
+            @Override
+            public void onBtnClick(int position) {
+
+            }
+        });
         lista.setAdapter(adp);
     }
 
@@ -152,9 +159,9 @@ public class Asignaturas extends Activity implements SimpleGestureListener{
                 dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialogo1, int id) {
-                        Asignaturas.open();
-                        Asignaturas.elimina(base, Integer.parseInt(id_consulta));
-                        Asignaturas.close();
+                        BD.open();
+                        BD.elimina(base, Integer.parseInt(id_consulta));
+                        BD.close();
                         onRestart();
                         Toast.makeText(getApplicationContext(), "Se ha eliminado la Asignatura Seleccionada", Toast.LENGTH_LONG).show();
                     }

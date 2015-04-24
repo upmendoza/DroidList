@@ -15,11 +15,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="AGREGAR ASIGNATURA"
                 android:id="@+id/agregar_grupo"/>
-    </LinearLayout>
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,6 +25,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/asignatura_txt"/>
+        <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spiGrupo" android:spinnerMode="dialog"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -12,7 +12,14 @@ import com.dl.upm.R;
 public class DBAdapter {
 
     // Definición de los campos de la base de datos
-// Campos de la Tabla lista_alumnos
+
+    // Campos de la Tabla GRUPO
+    public static final String GP_ID = "_id";
+    public static final String GP_NOMBRE = "nombre";
+    public static final String GP_carrera = "carrera";
+    public static final String DB_GRUPO = "grupo";
+
+    // Campos de la Tabla ALUMNOS
     public static final String AL_ID = "_id";
     public static final String AL_MAT = "matricula";
     public static final String AL_NOMBRE = "nombre";
@@ -21,43 +28,32 @@ public class DBAdapter {
     public static final String AL_EMAIL = "email";
     public static final String DB_ALUMNOS = "lista_alumnos";
 
-    // Campos de la Tabla Grupo-Asignatura(GA)
-    public static final String GA_ID = "_id";
-    public static final String GA_AS1 = "ID_AS1";
-    public static final String GA_GPO = "ID_GPO";
-    public static final String GA_HRINICIO = "hrinicio";
-    public static final String GA_HRFINAL = "hrfinal";
-    public static final String GA_DIA = "dia";
-    public static final String DB_GA = "ga";
-
-    // Campos de la Tabla Carga
-    public static final String CA_ID = "_id";
-    public static final String CA_IDGA = "ID_IDGA";
-    public static final String CA_MAT = "ID_MAT";
-    public static final String DB_CA = "carga";
-
-    // Campos de la Tabla grupo
-    public static final String GP_ID = "_id";
-    public static final String GP_NOMBRE = "nombre";
-    public static final String GP_carrera = "carrera";
-    public static final String DB_GRUPO = "grupo";
-
     // Campos de la Tabla ASIGNATURA
     public static final String AS_ID = "_id";
     public static final String AS_NOMBRE = "nombre";
+    public static final String AS_IDGPO = "id_grupo";
+    public static final String AS_IDHR = "id_horario";
     public static final String DB_ASIGNATURA = "asignatura";
 
-    // Campos de la Tabla incidencia
+    // Campos de la Tabla HORARIO
+    public static final String HR_ID = "_id";
+    public static final String HR_IDAS = "id_asignatura";
+    public static final String HR_DIA = "dia";
+    public static final String HR_HRINICIO = "hora_inicio";
+    public static final String HR_HRFIN = "hora_fin";
+    public static final String DB_HORARIO = "horario";
+
+    // Campos de la Tabla INCIDENCIA
     public static final String IN_ID = "_id";
-    public static final String IN_IDCA = "ID_CA";
-    private static final String IN_IDE = "ID_E";
-    private static final String IN_FECHA = "Fecha";
+    public static final String IN_IDAS = "id_asignatura";
+    private static final String IN_IDEDO = "id_estado";
+    private static final String IN_FECHA = "fecha";
     public static final String DB_INCIDENCIA = "incidencia";
 
     // Campos de la Tabla estado
-    public static final String E_ID = "_id";
-    public static final String E_ESTADO = "estado";
-    public static final String DB_E = "estado";
+    public static final String ES_ID = "_id";
+    public static final String ES_ESTADO = "estado";
+    public static final String DB_EDO = "estado";
 
 
     private Context context;
@@ -82,9 +78,9 @@ public class DBAdapter {
     //INICIA APARTADO DE INSERCION DE REGISTROS EN TABLAS
     public long tomaLista(int IDCA, int IDE, String FECHA) {
         ContentValues values = new ContentValues();
-        values.put(IN_IDCA, IDCA);
-        values.put(IN_IDE, IDE);
-        values.put(IN_FECHA, FECHA.toString());
+        values.put(IN_IDAS, IDCA);
+        values.put(IN_IDEDO, IDE);
+        values.put(IN_FECHA, FECHA);
         return db.insert(DB_INCIDENCIA, null, values);
     }
 
@@ -112,14 +108,15 @@ public class DBAdapter {
         return -1;
     }
     //Esta porcion de codigo no se modficara.
-    public long creaAsignatura(String NOMBRE) {
+    public long creaAsignatura(String NOMBRE, int VALOR) {
         CharSequence text;
         int duration = Toast.LENGTH_SHORT;
-        Cursor MiCursor = db.query(DB_ASIGNATURA, new String[]{AS_NOMBRE}, "nombre = ?", new String[]{NOMBRE}, null, null, null);
+        Cursor MiCursor = db.query(DB_ASIGNATURA, new String[]{AS_NOMBRE, AS_IDGPO}, "nombre = ? and id_grupo = ?", new String[]{NOMBRE, Integer.toString(VALOR)}, null, null, null);
 
         if (MiCursor.getCount() == 0) {
             ContentValues values = new ContentValues();
             values.put(AS_NOMBRE, NOMBRE);
+            values.put(AS_IDGPO, VALOR);
             text = "Entrada Registrada";       //CORREGIR esta situación mas adelante pues no se asegura que la inserción se haga correctamente
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
@@ -133,7 +130,6 @@ public class DBAdapter {
 
     }
 
-    // validacion de datos repetidos. Se modofico con los nuevos campos
     public long creaAlumno(String MATRICULA, String NOMBRE, String APPAT, String APMAT, String EMAIL) {
         CharSequence text;
         int duration = Toast.LENGTH_SHORT;
@@ -158,23 +154,21 @@ public class DBAdapter {
         return -1;
     }
 
-    //Se modificara, debido a modificacion de BDy se creara otro metodo para agregar Grupo-Asignatura(GA).
-    public long creaGA(int IDAS, int IDGPO, String HRINICIO, String HRFINAL, String DIA) {
+    public long creaHorario(int IDASIG, String DIA, String HRINICIO, String HRFIN) {
         CharSequence text;
         int duration = Toast.LENGTH_SHORT;
-        Cursor MiCursor = db.query(DB_GA, new String[]{GA_GPO}, "ID_GPO= ? and ID_AS1=?", new String[]{Integer.toString(IDGPO), Integer.toString(IDAS)}, null, null, null);
+        Cursor MiCursor = db.query(DB_HORARIO, null, "id_asignatura = ? and dia = ?", new String[]{String.valueOf(IDASIG), DIA}, null, null, null);
 
         if (MiCursor.getCount() == 0) {
             ContentValues values = new ContentValues();
-            values.put(GA_GPO, IDGPO);
-            values.put(GA_AS1, IDAS);
-            values.put(GA_HRINICIO, HRINICIO);
-            values.put(GA_HRFINAL, HRFINAL);
-            values.put(GA_DIA, DIA);
+            values.put(HR_IDAS, IDASIG);
+            values.put(HR_DIA, DIA);
+            values.put(HR_HRINICIO, HRINICIO);
+            values.put(HRFIN, HRFIN);
             text = "Entrada Registrada";       //CORREGIR esta situación mas adelante pues no se asegura que la inserción se haga correctamente
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-            return db.insert(DB_GA, null, values);   //Definir strings para cada tabla e insertar.
+            return db.insert(DB_HORARIO, null, values);
         } else {
             text = "La Entrada no puede ser ingresada, pues crearía datos duplicados";
             Toast toast = Toast.makeText(context, text, duration);
@@ -183,27 +177,27 @@ public class DBAdapter {
         return -1;
     }
 
-    public long creaCarga(int IDGA, int MATRICULA) {
+    public long creaEstado(String ESTADO) {
         CharSequence text;
         int duration = Toast.LENGTH_SHORT;
-        Cursor MiCursor = db.query(DB_CA, new String[]{CA_IDGA}, "ID_GA= ? and ID_MAT=?", new String[]{Integer.toString(IDGA), Integer.toString(MATRICULA)}, null, null, null);
+        Cursor MiCursor = db.query(DB_EDO, null, "estado = ? ", new String[]{ESTADO}, null, null, null);
 
         if (MiCursor.getCount() == 0) {
             ContentValues values = new ContentValues();
-            values.put(CA_IDGA, IDGA);
-            values.put(CA_MAT, MATRICULA);
+            values.put(ES_ESTADO, ESTADO);
             text = "Entrada Registrada";       //CORREGIR esta situación mas adelante pues no se asegura que la inserción se haga correctamente
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-            return db.insert(DB_GA, null, values);   //Definir strings para cada tabla e insertar.
+            return db.insert(DB_EDO, null, values);
         } else {
             text = "La Entrada no puede ser ingresada, pues crearía datos duplicados";
-            Toast toast = Toast.makeText(context, R.string.err_duplicado, duration); //así deberían ser usados los strings
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
         return -1;
     }
-
 //FINALIZA APARTADO DE INSERCION DE REGISTROS EN TABLAS
+
 
 //ELIMINACION DE UN REGISTRO EN PARTICULAR
     public boolean elimina(String Tabla, int ID) {
@@ -215,59 +209,50 @@ public class DBAdapter {
     }
 
 
-    /**
-     * CONSULTAS DE TODOS LOS ELEMENTOS DE UNA TABLA
-     */
+/*
+* CONSULTAS DE ELEMENTOS DE TABLAS
+*/
     public Cursor fetchAll(String DataBase) {
-
-        return db.query(DataBase, new String[]{GP_ID, GP_NOMBRE,}, null, null, null, null, null);
-
+        return db.query(DataBase, null, null, null, null, null, null);
     }
 
     public Cursor fetchAll_grupos() {
-
         return db.query(DB_GRUPO, new String[]{GP_ID, GP_NOMBRE,
                 GP_carrera}, null, null, null, null, null);
     }
-
-    public Cursor fetch_grupos(String vIDGPO) {
-
-        return db.query(DB_GRUPO, new String[]{GP_ID, GP_NOMBRE,
-                GP_carrera}, "_id=?", new String[]{vIDGPO}, null, null, null);
-    }
-
-    public Cursor fetch_alumnos(String vID) {
-
-        return db.query(DB_ALUMNOS, null, "_id=?", new String[]{vID}, null, null, null);
-    }
-
-    public Cursor fetch_asignaturas(String vID) {
-
-        return db.query(DB_ASIGNATURA, null, "_id=?", new String[]{vID}, null, null, null);
-    }
-
-    public Cursor fetch_asignatura_carga(int vValue) {
-
-        String MY_QUERY = "SELECT asignatura._id, asignatura.nombre, carga.ID_GPO" + " FROM asignatura INNER JOIN carga ON asignatura._id = carga.ID_AS1" + " WHERE (((carga.ID_GPO)=?));";
-        return db.rawQuery(MY_QUERY, new String[]{String.valueOf(vValue)});
-    }
-
     public Cursor fetchAll_asignatura() {
-        return db.query(DB_ASIGNATURA, new String[]{AS_ID, AS_NOMBRE,}, null, null, null, null, null);
+        return db.query(DB_ASIGNATURA, new String[]{AS_ID, AS_NOMBRE,AS_IDGPO}, null, null, null, null, null);
     }
-
     public Cursor fetchAll_alumnos() {
-
         return db.query(DB_ALUMNOS, new String[]{AL_ID, AL_MAT, AL_NOMBRE, AL_APPAT, AL_APMAT, AL_EMAIL},null, null, null, null, null);
     }
 
-    //PENDIENTE NO FUNCIONA!!!!!!!!
-    public Cursor fetch_cuenta(String vIDPGO, String vIDAL, String vIDAS, String vEstado) {
-
-        return db.query(DB_INCIDENCIA, new String[]{IN_IDCA}, "ID_GPO=? and estado=? and ID_AL=? and ID_AS=?", new String[]{vIDPGO, vEstado, vIDAL, vIDAS}, null, null, null);
+    public Cursor fetch_grupos(String vIDGPO) {
+        return db.query(DB_GRUPO, new String[]{GP_ID, GP_NOMBRE,
+                GP_carrera}, "_id = ?", new String[]{vIDGPO}, null, null, null);
     }
+    public Cursor fetch_alumnos(String vID) {
+        return db.query(DB_ALUMNOS, null, "_id=?", new String[]{vID}, null, null, null);
+    }
+    public Cursor fetch_asignaturas(String vID) {
+        return db.query(DB_ASIGNATURA, null, "_id=?", new String[]{vID}, null, null, null);
+    }
+    public Cursor fetch_horario(String vID) {
+        return db.query(DB_HORARIO, null, "id_asignatura = ?", new String[]{vID}, null, null, null);
+    }
+    public Cursor fetch_asignatura_carga(int vValue) {
+        String MY_QUERY = "SELECT asignatura._id, asignatura.nombre, carga.ID_GPO" + " FROM asignatura INNER JOIN carga ON asignatura._id = carga.ID_AS1" + " WHERE (((carga.ID_GPO)=?));";
+        return db.rawQuery(MY_QUERY, new String[]{String.valueOf(vValue)});
+    }
+/*
+* CONSULTAS DE ELEMENTOS DE TABLAS
+*/
 
-public long updateGrupo(String NOMBRE, String[] NUEVOSDATOS) {
+/*
+* ACTUALIZACION/MODIFICACIÓN DE DATOS EXISTENTES
+*/
+
+    public long updateGrupo(String NOMBRE, String[] NUEVOSDATOS) {
     CharSequence text;
     long result;
     int duration = Toast.LENGTH_SHORT;
@@ -315,7 +300,7 @@ public long updateGrupo(String NOMBRE, String[] NUEVOSDATOS) {
         return -1;
     }
 
-    public long updateAsignatura(String vID, String NOMBRE) {
+    public long updateAsignatura(String vID, String NOMBRE, int VALOR) {
         CharSequence text;
         long result;
         int duration = Toast.LENGTH_SHORT;
@@ -324,6 +309,7 @@ public long updateGrupo(String NOMBRE, String[] NUEVOSDATOS) {
         if (MiCursor.getCount() == 1) {
             ContentValues values = new ContentValues();
             values.put(AS_NOMBRE, NOMBRE);
+            values.put(AS_IDGPO, VALOR);
             result = db.update(DB_ASIGNATURA, values,"_id = ?",new String[]{vID});
             text = "Entrada ACTUALIZADA";       //CORREGIR esta situación mas adelante pues no se asegura que la ACTUALIZACION se haga correctamente
             Toast toast = Toast.makeText(context, text, duration);
