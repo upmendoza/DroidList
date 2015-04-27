@@ -58,6 +58,8 @@ public class adapterAlumnos extends BaseAdapter{
 
         TextView correo = (TextView) v.findViewById(R.id.correoAlumno);
         correo.setText(list.getCorreoAlumno());
+        /*TextView asistencia = (TextView) v.findViewById(R.id.tipoAsistencia);
+                asistencia.setText(list.getA()); */
 
         //String idAlumno = list.getIdAlumno();
 

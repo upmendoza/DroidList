@@ -3,8 +3,9 @@
           package="com.dl.upm">
     <uses-sdk android:maxSdkVersion="19"
               android:targetSdkVersion="14"
-              android:minSdkVersion="14" />
-    <application android:theme="@android:style/Theme.Holo.Light" android:name="com.dl.upm.MiLista" android:icon="@drawable/ic_launcher_dl" android:label="@string/app_name">
+              android:minSdkVersion="14"/>
+    <application android:theme="@android:style/Theme.Holo.Light" android:name="com.dl.upm.MiLista"
+                 android:icon="@drawable/ic_launcher_dl" android:label="@string/app_name">
         <activity
                 android:label="@string/app_name"
                 android:name="com.dl.upm.Splash">
@@ -14,8 +15,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.dl.upm.Catalogo"
-            android:windowSoftInputMode="stateVisible|adjustResize"
+                android:name="com.dl.upm.Catalogo"
+                android:windowSoftInputMode="stateVisible|adjustResize"
 
                 >
         </activity>
@@ -30,15 +31,15 @@
                 android:parentActivityName="com.dl.upm.Alumnos">
         </activity>
         <activity
-            android:name="com.dl.upm.Grupos"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:parentActivityName="com.dl.upm.Catalogo">
+                android:name="com.dl.upm.Grupos"
+                android:windowSoftInputMode="stateVisible|adjustResize"
+                android:parentActivityName="com.dl.upm.Catalogo">
         </activity>
         <activity
                 android:name="com.dl.upm.Horario"
                 android:windowSoftInputMode="stateVisible|adjustResize"
                 android:parentActivityName="com.dl.upm.Asignaturas">
-    </activity>
+        </activity>
         <activity
                 android:name="com.dl.upm.Detalle_Grupos"
                 android:windowSoftInputMode="stateVisible|adjustResize"
@@ -53,13 +54,19 @@
         <activity
                 android:name="com.dl.upm.Detalle_Asignatura"
                 android:windowSoftInputMode="stateVisible|adjustResize"
-                android:parentActivityName= "com.dl.upm.Asignaturas"
+                android:parentActivityName="com.dl.upm.Asignaturas"
                 >
         </activity>
         <activity
                 android:name="com.dl.upm.Asistencia"
                 android:windowSoftInputMode="stateVisible|adjustResize"
                 android:parentActivityName="com.dl.upm.Catalogo">
+
+        </activity>
+        <activity
+                android:name="com.dl.upm.Asistencia_grupos"
+                android:windowSoftInputMode="stateVisible|adjustResize"
+                android:parentActivityName="com.dl.upm.Asistencia">
 
         </activity>
     </application>
