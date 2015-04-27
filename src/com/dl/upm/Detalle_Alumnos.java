@@ -20,7 +20,7 @@ public class Detalle_Alumnos extends Activity  {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.alta_alumnos, menu);
-        //UPM-DESPUÉS DE REALIZADO EL PRIMER COMIT MODIFICAR LOS MENU alta_*.xml PARA INTEGRARLOS EN UNO SOLO PUES HAY DESPERDICIO DE CODIGO.
+        //UPM-DESPUï¿½S DE REALIZADO EL PRIMER COMIT MODIFICAR LOS MENU alta_*.xml PARA INTEGRARLOS EN UNO SOLO PUES HAY DESPERDICIO DE CODIGO.
         return true;
     }
 
@@ -41,10 +41,11 @@ public class Detalle_Alumnos extends Activity  {
         setContentView(R.layout.agregar_alumnos);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dAlumnos = new DBAdapter(this);
-        Bundle extras = getIntent().getExtras(); //RECUPERANDO EL ID EN CASO DE ACTUALIZACIÓN
+        Bundle extras = getIntent().getExtras(); //RECUPERANDO EL ID EN CASO DE ACTUALIZACIï¿½N
         if (extras == null) esAlta = true;
         else {
             esAlta = false;
+            dAlumnos = new DBAdapter(this);
             dAlumnos.open();
             cAlumnos = dAlumnos.fetch_alumnos(extras.getString("IDAlumno"));
             cAlumnos.moveToFirst();
@@ -84,14 +85,14 @@ public class Detalle_Alumnos extends Activity  {
                                 Toast.makeText(this, "ERROR el campo CORREO NO ES VALIDO ", Toast.LENGTH_SHORT).show();
                             } else {
                                 if (esAlta) {
-                                    dAlumnos.creaAlumno(matricula.getText().toString(), nombre.getText().toString(), apaterno.getText().toString(), amaterno.getText().toString(), celectronico.getText().toString());
+                                    dAlumnos.creaAlumno(matricula.getText().toString(), nombre.getText().toString(), apaterno.getText().toString(), amaterno.getText().toString(), celectronico.getText().toString(),1); //Por lo pronto estoy poniendo a los alumnos en el mismo grupo, el grupo 1.
                                     matricula.setText("");
                                     nombre.setText("");
                                     apaterno.setText("");
                                     amaterno.setText("");
                                     celectronico.setText("");
                                 }
-                                else dAlumnos.updateAlumno(matricula.getText().toString(), nombre.getText().toString(), apaterno.getText().toString(), amaterno.getText().toString(), celectronico.getText().toString());
+                                else dAlumnos.updateAlumno(matricula.getText().toString(), nombre.getText().toString(), apaterno.getText().toString(), amaterno.getText().toString(), celectronico.getText().toString(),1);
                                 dAlumnos.close();
 
                             }

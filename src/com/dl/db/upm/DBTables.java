@@ -19,7 +19,7 @@ public class DBTables {
 
     //Se modifico: ID y se añadieron los campos: appat, apmat, email.
     private static final String DATABASE_CREATE_ALUMNO = "create table lista_alumnos (_id integer primary key autoincrement, matricula text not null, "
-            + "nombre text not null, " + "appat text not null, " + "apmat text not null, " + "email text not null);";
+            + "nombre text not null, " + "appat text not null, " + "apmat text not null, " + "email text not null, " + "id_grupo int not null);";
 
     private static final String DATABASE_CREATE_ASIGNATURA = "create table asignatura (_id integer primary key autoincrement,"
             + "nombre text not null, "+"id_grupo integer, "+"id_horario integer);";
@@ -28,7 +28,7 @@ public class DBTables {
             + "id_asignatura integer not null, " + "dia text not null, " + "hora_inicio text not null, " + "hora_fin text not null, " + "selected integer not null);";
 
     private static final String DATABASE_CREATE_INCIDENCIA = "create table incidencia (_id integer primary key autoincrement,"
-            + "id_asignatura integer not null, " + "id_estado integer not null, " + "fecha text not null);";
+            + "id_asignatura integer not null, " + "id_alumno integer not null, " + "id_estado integer not null, " + "fecha text not null);";
 
     private static final String DATABASE_CREATE_ESTADO = "create table estado (_id integer primary key autoincrement,"
             + "estado text not null);";

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
-import com.dl.upm.R;
 
 
 public class DBAdapter {
@@ -26,6 +25,7 @@ public class DBAdapter {
     public static final String AL_APPAT = "appat";
     public static final String AL_APMAT = "apmat";
     public static final String AL_EMAIL = "email";
+    public static final String ID_GRUPO = "id_grupo";
     public static final String DB_ALUMNOS = "lista_alumnos";
 
     // Campos de la Tabla ASIGNATURA
@@ -46,6 +46,7 @@ public class DBAdapter {
     // Campos de la Tabla INCIDENCIA
     public static final String IN_ID = "_id";
     public static final String IN_IDAS = "id_asignatura";
+    public static final String IN_AL = "id_alumno";
     private static final String IN_IDEDO = "id_estado";
     private static final String IN_FECHA = "fecha";
     public static final String DB_INCIDENCIA = "incidencia";
@@ -76,13 +77,17 @@ public class DBAdapter {
 
 
     //INICIA APARTADO DE INSERCION DE REGISTROS EN TABLAS
-    public long tomaLista(int IDCA, int IDE, String FECHA) {
+    public long tomaLista(int IDASIGNATURA, int IDALUMNO, int ESTADO, String FECHA) {
         ContentValues values = new ContentValues();
-        values.put(IN_IDAS, IDCA);
-        values.put(IN_IDEDO, IDE);
+        values.put(IN_IDAS, IDASIGNATURA);
+        values.put(IN_AL,IDALUMNO);
+        values.put(IN_IDEDO, ESTADO);
         values.put(IN_FECHA, FECHA);
+
         return db.insert(DB_INCIDENCIA, null, values);
     }
+
+
 
     //Esta porcion de codigo no se modficara.
     public long creaGrupo(String NOMBRE, String CARRERA) {
@@ -130,7 +135,7 @@ public class DBAdapter {
 
     }
 
-    public long creaAlumno(String MATRICULA, String NOMBRE, String APPAT, String APMAT, String EMAIL) {
+    public long creaAlumno(String MATRICULA, String NOMBRE, String APPAT, String APMAT, String EMAIL, int IDGRUPO) {
         CharSequence text;
         int duration = Toast.LENGTH_SHORT;
         Cursor MiCursor = db.query(DB_ALUMNOS, new String[]{AL_MAT}, "matricula = ?", new String[]{MATRICULA}, null, null, null);
@@ -142,6 +147,7 @@ public class DBAdapter {
             values.put(AL_APPAT, APPAT);
             values.put(AL_APMAT, APMAT);
             values.put(AL_EMAIL, EMAIL);
+            values.put(ID_GRUPO, IDGRUPO);
             text = "Entrada Registrada";       //CORREGIR esta situación mas adelante pues no se asegura que la inserción se haga correctamente
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
@@ -226,6 +232,10 @@ public class DBAdapter {
     public Cursor fetchAll_alumnos() {
         return db.query(DB_ALUMNOS, new String[]{AL_ID, AL_MAT, AL_NOMBRE, AL_APPAT, AL_APMAT, AL_EMAIL},null, null, null, null, null);
     }
+    public Cursor fetchAll_alumnosByGroup(int vId) {
+            String MY_QUERY = "SELECT _id, nombre,appat,apmat,id_grupo FROM lista_alumnos  WHERE (((id_grupo)=?));";
+            return this.db.rawQuery(MY_QUERY, new String[]{String.valueOf(vId)});
+        }
 
     public Cursor fetch_grupos(String vIDGPO) {
         return db.query(DB_GRUPO, new String[]{GP_ID, GP_NOMBRE,
@@ -274,7 +284,7 @@ public class DBAdapter {
     }
     return -1;
 }
-    public long updateAlumno(String matricula,String nombre, String ApPat, String ApMat, String email) {
+    public long updateAlumno(String matricula,String nombre, String ApPat, String ApMat, String email, int id_grupo) {
         CharSequence text;
         long result;
         int duration = Toast.LENGTH_SHORT;
@@ -287,6 +297,7 @@ public class DBAdapter {
             values.put(AL_APPAT, ApPat);
             values.put(AL_APMAT, ApMat);
             values.put(AL_EMAIL, email);
+            values.put(ID_GRUPO, id_grupo);
             result = db.update(DB_ALUMNOS, values,"matricula = ?",new String[]{matricula});
             text = "Entrada Actualizada";       //CORREGIR esta situación mas adelante pues no se asegura que la ACTUALIZACION se haga correctamente
             Toast toast = Toast.makeText(context, text, duration);
