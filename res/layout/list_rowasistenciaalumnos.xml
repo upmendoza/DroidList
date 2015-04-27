@@ -1,7 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
 
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/imagenAlumno"
+                android:scaleType="centerInside" android:cropToPadding="false"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                />
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:textAppearance="?android:attr/textAppearanceSmall" android:text="Small Text"
+                      android:id="@+id/correoAlumno"
+                      android:layout_below="@+id/matriculaAlumno" android:layout_alignLeft="@+id/matriculaAlumno"
+                      android:visibility="gone"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Small Text"
+                    android:id="@+id/nombreAlumno"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignTop="@+id/imagenAlumno" android:layout_toRightOf="@+id/imagenAlumno"
+                    android:textStyle="bold"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:textAppearance="?android:attr/textAppearanceSmall" android:text="Asistencia Text"
+                      android:textSize="14dp"
+                      android:id="@+id/tipoAsistencia"
+                      android:layout_marginRight="15dp"
+                      android:layout_below="@+id/matriculaAlumno" android:layout_alignRight="@+id/matriculaAlumno"
+                      android:layout_gravity="right"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Small Text"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/matriculaAlumno" android:layout_alignBottom="@+id/imagenAlumno"
+                    android:layout_alignLeft="@+id/nombreAlumno"
+                    />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
