@@ -25,6 +25,7 @@ public class Asistencia_grupos extends Activity {
     String id_consulta;
     String id_alumno;
     ArrayList<listaAlumnos> datosassign;
+    ArrayList<Integer>listIdAlumnos;
     listaAlumnos list;
     String base;
     private Bundle mBundle;
@@ -46,29 +47,13 @@ public class Asistencia_grupos extends Activity {
 
 
         lista = (ListView) findViewById(R.id.listItems);
-        /*lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> av, View v, int pos, final long id) {
 
-                final CharSequence[] items = {"Revansch!", "Lägg till som vän", "Ta bort spelet"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-
-                return true;
-            }
-        });*/
         lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            int position, final long id) {
-                id_consulta = array[position-1];
-                id_alumno = String.valueOf(datosassign.get(Integer.parseInt(id_consulta)).getId());
+                //id_consulta = array[position];
+                id_alumno = String.valueOf(array[position]);
                 // base = "Alumno";
                 final String[] items = {"Asistencia", "Justificación", "Retardo", "Falta"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(Asistencia_grupos.this);
@@ -118,8 +103,8 @@ public class Asistencia_grupos extends Activity {
                                          @Override
                                          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                             id_consulta = array[position-1];
-                                             id_alumno = String.valueOf(datosassign.get(Integer.parseInt(id_consulta)).getId());
+                                             //id_consulta = position;
+                                             id_alumno = String.valueOf(array[position]);
                                              Asistencia = new DBAdapter(getApplicationContext());
                                              Asistencia.open();
                                              dAlumnos = new DBAdapter(getApplicationContext());
@@ -156,7 +141,8 @@ public class Asistencia_grupos extends Activity {
         cAlumnos = dAlumnos.fetchAll_alumnosByGroup(id_grupo);
 
         lista = (ListView) findViewById(R.id.listItems);
-        datosassign = new ArrayList<listaAlumnos>();
+        datosassign = new ArrayList<listaAlumnos>();// dAlumnos.fetchAll_alumnos();
+
         int i = 0;
         while (cAlumnos.moveToNext()) {
             array[i] = cAlumnos.getString(0);
