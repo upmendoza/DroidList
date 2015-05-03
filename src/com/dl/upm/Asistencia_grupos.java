@@ -18,23 +18,23 @@ import java.util.Date;
 
 public class Asistencia_grupos extends Activity {
 
-    DBAdapter dAlumnos, Asistencia;
+    DBAdapter dAlumnos;
     Cursor cAlumnos, dataAsistencia;
     String[] array = new String[200];
     ListView lista;
     String id_consulta;
     String id_alumno;
     ArrayList<listaAlumnos> datosassign;
-    ArrayList<Integer>listIdAlumnos;
+    ArrayList<Integer> listIdAlumnos;
     listaAlumnos list;
     String base;
     private Bundle mBundle;
     int opcionElegida = -1;
 
-    private final int ASISTENCIA = 1;
-    private final int JUSTIFICACION = 2;
-    private final int RETARDO = 3;
-    private final int FALTA = 4;
+    private final String ASISTENCIA = "1";
+    private final String JUSTIFICACION = "2";
+    private final String RETARDO = "3";
+    private final String FALTA = "4";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,6 @@ public class Asistencia_grupos extends Activity {
         setContentView(R.layout.toma_asistencia);
 
         llenaLista();
-        if (opcionElegida < 0)
-            opcionElegida = -1;
 
 
         lista = (ListView) findViewById(R.id.listItems);
@@ -52,8 +50,23 @@ public class Asistencia_grupos extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            int position, final long id) {
-                //id_consulta = array[position];
                 id_alumno = String.valueOf(array[position]);
+                dAlumnos = new DBAdapter(getApplicationContext());
+                dAlumnos.open();
+                cAlumnos = dAlumnos.fetch_alumnos(id_alumno);
+                dataAsistencia = dAlumnos.fetch_incidencia(id_alumno, getFechaActual());
+                int columnAlumnoEstado = dataAsistencia.getColumnIndex(dAlumnos.IN_IDEDO);
+
+                try {
+                    opcionElegida = Integer.parseInt(dataAsistencia.getString(3));
+                } catch (Exception e) {
+                    opcionElegida = -1;
+                    e.printStackTrace();
+                }
+                /*if (opcionElegida < 0)
+                    opcionElegida = -1; */
+                //id_consulta = array[position];
+
                 // base = "Alumno";
                 final String[] items = {"Asistencia", "Justificación", "Retardo", "Falta"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(Asistencia_grupos.this);
@@ -63,7 +76,7 @@ public class Asistencia_grupos extends Activity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int item) {
                                         Toast.makeText(getApplicationContext(), "Elegido: " + items[item], Toast.LENGTH_LONG).show();
-                                        int id_Estado = 0;
+                                        String id_Estado = "";
                                         if ((items[item] == items[0])) {
                                             id_Estado = ASISTENCIA;
 
@@ -79,13 +92,11 @@ public class Asistencia_grupos extends Activity {
                                         }
 
                                         dialog.dismiss();
-                                        dAlumnos = new DBAdapter(getApplicationContext());
-                                        dAlumnos.open();
-                                        cAlumnos = dAlumnos.fetch_alumnos(id_alumno);
-                                        Asistencia.tomaLista(0, cAlumnos.getInt(0), id_Estado, getFechaActual());
 
-                                        //Aquí se va a guardar la selección mediante insert o update a la bd
-
+                                        // int columnAlumnoId = dataAsistencia.getColumnIndex(dAlumnos.IN_AL);
+                                        // String id_alumno = cAlumnos.getString(columnAlumnoId);
+                                        dAlumnos.tomaLista("0", id_alumno, id_Estado, getFechaActual());
+                                        llenaLista();
                                         // Log.i("Asistencia", "Opción elegida: " + items[item]);
                                     }
                                 });
@@ -103,21 +114,42 @@ public class Asistencia_grupos extends Activity {
                                          @Override
                                          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                             //id_consulta = position;
                                              id_alumno = String.valueOf(array[position]);
-                                             Asistencia = new DBAdapter(getApplicationContext());
-                                             Asistencia.open();
                                              dAlumnos = new DBAdapter(getApplicationContext());
                                              dAlumnos.open();
-
                                              cAlumnos = dAlumnos.fetch_alumnos(id_alumno);
-                                             if (cAlumnos.getInt(0) == ASISTENCIA)
-                                                 Asistencia.tomaLista(0, cAlumnos.getInt(0), FALTA, getFechaActual());
-                                             else
-                                                 Asistencia.tomaLista(0, cAlumnos.getInt(0), ASISTENCIA, getFechaActual());
-                                             //if ()
-                                             Toast.makeText(getApplicationContext(), "ID Alumno: " + id_alumno, Toast.LENGTH_LONG).show();
-                                             //Aquí se va a cambiar de presente a falta y viceversa.
+                                             dataAsistencia = dAlumnos.fetch_incidencia(id_alumno, getFechaActual());
+                                             int columnAlumnoEstado = dataAsistencia.getColumnIndex(dAlumnos.IN_IDEDO);
+
+                                             try {
+                                                 opcionElegida = Integer.parseInt(dataAsistencia.getString(columnAlumnoEstado));
+                                             } catch (Exception e) {
+                                                 opcionElegida = -1;
+                                                 e.printStackTrace();
+                                             }
+                                             id_alumno = String.valueOf(array[position]);
+
+
+                                             dataAsistencia = dAlumnos.fetch_incidencia(id_alumno, getFechaActual());
+
+                                            //Aquí se va a cambiar de presente a falta y viceversa.
+                                             try {
+                                                 if (opcionElegida == Integer.parseInt(ASISTENCIA)) {
+                                                     dAlumnos.tomaLista("0", id_alumno, FALTA, getFechaActual());   //El id asignatura lo dejé vacío (con un 0) por que no lo tengo.
+                                                     Toast.makeText(getApplicationContext(), "ASISTENCIA", Toast.LENGTH_LONG).show();
+                                                 } else {
+                                                     dAlumnos.tomaLista("0", id_alumno, ASISTENCIA, getFechaActual());
+                                                     Toast.makeText(getApplicationContext(), "FALTA ", Toast.LENGTH_LONG).show();
+                                                 }
+                                             } catch (Exception e) {
+                                                 //No hay registro entonces se crea uno nuevo
+                                                 dAlumnos.tomaLista("0", id_alumno, ASISTENCIA, getFechaActual());
+                                                 e.printStackTrace();
+                                             }
+                                             llenaLista();
+
+                                             //Toast.makeText(getApplicationContext(), "ID Alumno: " + id_alumno, Toast.LENGTH_LONG).show();
+
                                          }
                                      }
 

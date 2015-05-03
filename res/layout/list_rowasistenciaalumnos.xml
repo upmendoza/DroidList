@@ -36,7 +36,7 @@
                     android:layout_alignTop="@+id/imagenAlumno" android:layout_toRightOf="@+id/imagenAlumno"
                     android:textStyle="bold"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:textAppearance="?android:attr/textAppearanceSmall" android:text="Asistencia Text"
+                      android:textAppearance="?android:attr/textAppearanceSmall"
                       android:textSize="14dp"
                       android:id="@+id/tipoAsistencia"
                       android:layout_marginRight="15dp"

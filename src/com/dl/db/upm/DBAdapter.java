@@ -47,8 +47,8 @@ public class DBAdapter {
     public static final String IN_ID = "_id";
     public static final String IN_IDAS = "id_asignatura";
     public static final String IN_AL = "id_alumno";
-    private static final String IN_IDEDO = "id_estado";
-    private static final String IN_FECHA = "fecha";
+    public static final String IN_IDEDO = "id_estado";
+    public static final String IN_FECHA = "fecha";
     public static final String DB_INCIDENCIA = "incidencia";
 
     // Campos de la Tabla estado
@@ -77,14 +77,20 @@ public class DBAdapter {
 
 
     //INICIA APARTADO DE INSERCION DE REGISTROS EN TABLAS
-    public long tomaLista(int IDASIGNATURA, int IDALUMNO, int ESTADO, String FECHA) {
+    public long tomaLista(String IDASIGNATURA, String IDALUMNO, String ESTADO, String FECHA) {
         ContentValues values = new ContentValues();
-        values.put(IN_IDAS, IDASIGNATURA);
-        values.put(IN_AL, IDALUMNO);
-        values.put(IN_IDEDO, ESTADO);
-        values.put(IN_FECHA, FECHA);
-
-        return db.insert(DB_INCIDENCIA, null, values);
+        Cursor MiCursor = db.query(DB_INCIDENCIA, null, "id_alumno = ? AND fecha = ?", new String[]{IDALUMNO, FECHA}, null, null, null);
+         if (MiCursor.getCount() <= 0) {
+            values.put(IN_IDAS, Integer.parseInt(IDASIGNATURA));
+            values.put(IN_AL, Integer.parseInt(IDALUMNO));
+            values.put(IN_IDEDO, Integer.parseInt(ESTADO));
+            values.put(IN_FECHA, FECHA);
+            return db.insert(DB_INCIDENCIA, null, values);
+        }
+        else
+        {
+            return db.update(DB_INCIDENCIA,values,"id_alumno = ? and fecha = ?", new String[]{IDALUMNO, FECHA});
+        }
     }
 
 
@@ -244,7 +250,7 @@ public class DBAdapter {
     public int getGrupoIdByNombre(String nombreGrupo) {
         String MY_QUERY = "SELECT _id FROM grupo  WHERE (((nombre)=?));";
         int i = this.db.rawQuery(MY_QUERY, new String[]{nombreGrupo}).getInt(0);
-        return  i;
+        return i;
     }
 
     public Cursor fetch_grupos(String vIDGPO) {
@@ -264,8 +270,15 @@ public class DBAdapter {
         return db.query(DB_HORARIO, null, "id_asignatura = ?", new String[]{vID}, null, null, null);
     }
 
+    public Cursor fetch_incidencia(String id_alumno, String fecha) {  ///Sería bueno agregarle también el ID_ASIGNATURA
+
+        return  db.query(DB_INCIDENCIA, null, "id_alumno = ? AND fecha = ?", new String[]{id_alumno, fecha}, null, null, null);
+
+    }
+
     public Cursor fetch_asignatura_carga(int vValue) {
         String MY_QUERY = "SELECT asignatura._id, asignatura.nombre, carga.ID_GPO" + " FROM asignatura INNER JOIN carga ON asignatura._id = carga.ID_AS1" + " WHERE (((carga.ID_GPO)=?));";
+
         return db.rawQuery(MY_QUERY, new String[]{String.valueOf(vValue)});
     }
 /*

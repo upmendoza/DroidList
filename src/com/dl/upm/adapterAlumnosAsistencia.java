@@ -14,40 +14,41 @@ import java.util.ArrayList;
 /**
  * Created by DELL on 04/12/2014.
  */
-public class adapterAlumnosAsistencia extends BaseAdapter{
+public class adapterAlumnosAsistencia extends BaseAdapter {
     protected Activity activity;
     protected ArrayList<listaAlumnos> items;
 
-    public adapterAlumnosAsistencia(Activity activity, ArrayList<listaAlumnos> items){
+    public adapterAlumnosAsistencia(Activity activity, ArrayList<listaAlumnos> items) {
         this.activity = activity;
         this.items = items;
     }
 
     @Override
-    public int getCount(){
+    public int getCount() {
         return items.size();
     }
+
     @Override
-    public Object getItem(int arg0){
+    public Object getItem(int arg0) {
         return items.get(arg0);
     }
 
     @Override
-    public long getItemId(int position){
+    public long getItemId(int position) {
         return items.get(position).getId();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
 
-        if(convertView == null){
-            LayoutInflater inf = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (convertView == null) {
+            LayoutInflater inf = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inf.inflate(R.layout.list_rowasistenciaalumnos, null);
         }
         listaAlumnos list = items.get(position);
 
-        ImageView Picture= (ImageView)v.findViewById(R.id.imagenAlumno);
+        ImageView Picture = (ImageView) v.findViewById(R.id.imagenAlumno);
         Picture.setImageDrawable(list.getPicture());
 
         TextView nombre = (TextView) v.findViewById(R.id.nombreAlumno);
@@ -56,8 +57,13 @@ public class adapterAlumnosAsistencia extends BaseAdapter{
         TextView matricula = (TextView) v.findViewById(R.id.matriculaAlumno);
         matricula.setText(list.getMatriculaAlumno());
 
-        TextView correo = (TextView) v.findViewById(R.id.correoAlumno);
-        correo.setText(list.getCorreoAlumno());
+       /* TextView correo = (TextView) v.findViewById(R.id.correoAlumno);
+        correo.setText(list.getCorreoAlumno());*/
+
+        TextView tipoAsistencia = (TextView) v.findViewById(R.id.tipoAsistencia);
+
+
+        tipoAsistencia.setText("");
 
         //String idAlumno = list.getIdAlumno();
 
