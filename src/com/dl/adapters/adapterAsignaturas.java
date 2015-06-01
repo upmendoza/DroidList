@@ -1,4 +1,4 @@
-package com.dl.upm;
+package com.dl.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.dl.upm.BtnClickListener;
+import com.dl.upm.Horario;
+import com.dl.upm.ListaAsignaturas;
+import com.dl.upm.R;
 
 import java.util.ArrayList;
 
@@ -61,8 +65,8 @@ public class adapterAsignaturas extends BaseAdapter {
         Horario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "CLIC EN BOTON DE HORARIO - Posición: " + position, Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(v.getContext(), Horario.class);
+                Toast.makeText(v.getContext(), "CLIC EN BOTON DE HORARIO - Posiciï¿½n: " + position, Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(v.getContext(), com.dl.upm.Horario.class);
                 i.putExtra("AS_ID",list.getId());
                 v.getContext().startActivity(i);
             }

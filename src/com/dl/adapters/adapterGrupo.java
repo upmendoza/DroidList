@@ -1,4 +1,4 @@
-package com.dl.upm;
+package com.dl.adapters;
 
 /**
  * Creado por Villa.
@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.dl.upm.ListaGrupo;
+import com.dl.upm.R;
+
 import java.util.ArrayList;
 
 

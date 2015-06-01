@@ -1,4 +1,4 @@
-package com.dl.upm;
+package com.dl.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.dl.upm.R;
+import com.dl.upm.listaAlumnos;
 
 import java.util.ArrayList;
 
