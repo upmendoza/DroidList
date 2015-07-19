@@ -2,8 +2,7 @@ package com.dl.db.upm;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import com.dl.db.upm.models.*;
-import com.dl.models.Alumno;
+import com.dl.models.*;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -25,10 +24,10 @@ public class DBManager extends OrmLiteSqliteOpenHelper {
     private static DBManager manager;
     private ConnectionSource connectionSource;
     private Dao<Alumno, Integer> alumno = null;
-    private Dao<Incidencia, Integer> incidencia = null;
     private Dao<Asignatura, Integer> asignatura = null;
     private Dao<Grupo, Integer> grupo = null;
     private Dao<Horario, Integer> horario = null;
+    private Dao<Incidencia, Integer> incidencia = null;
 
     private Context context;
 
@@ -74,7 +73,7 @@ public class DBManager extends OrmLiteSqliteOpenHelper {
                 oldVersion++;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -93,18 +92,7 @@ public class DBManager extends OrmLiteSqliteOpenHelper {
         return alumno;
     }
 
-    public Dao<Incidencia, Integer> getIncidencia() {
 
-        if (indicencia == null) {
-            try {
-                indicencia = getDao(Incidencia.class);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return indicencia;
-    }
 
     public Dao<Asignatura, Integer> getAsignatura() {
 
@@ -143,6 +131,19 @@ public class DBManager extends OrmLiteSqliteOpenHelper {
             }
 
             return horario;
+        }
+
+    public Dao<Incidencia, Integer> getIncidencia() {
+
+            if (incidencia == null) {
+                try {
+                    incidencia = getDao(Incidencia.class);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return incidencia;
         }
 
 

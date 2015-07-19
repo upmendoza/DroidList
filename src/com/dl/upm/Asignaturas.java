@@ -10,6 +10,7 @@ import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.dl.adapters.adapterAsignaturas;
 import com.dl.db.upm.DBAdapter;
 import com.dl.upm.SimpleGestureFilter.SimpleGestureListener;
 

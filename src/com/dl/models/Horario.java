@@ -15,53 +15,56 @@ import java.util.List;
 @DatabaseTable
 public class Horario {
     public static final String ID = "id";
-    public static final String NOMBRE = "nombre";
-    public static final String CARRERA = "appat";
+    public static final String ID_ASIGNATURA = "id_asignatura";
+    public static final String DIA = "dia";
+    public static final String HORA_INICIO = "hora_inicio";
+    public static final String HORA_FIN = "hora_fin";
+
 
     @DatabaseField(generatedId = true, columnName = ID)
     private Integer id;
-    @DatabaseField(columnName = NOMBRE)
-    private String nombre;
-    @DatabaseField(columnName = CARRERA)
-    private String carrera;
+    @DatabaseField(columnName = ID_ASIGNATURA)
+    private int id_asignatura;
+    @DatabaseField(columnName = DIA)
+    private String dia;
+    @DatabaseField(columnName = HORA_INICIO)
+    private String hora_inicio;
+    @DatabaseField(columnName = HORA_FIN)
+    private String hora_fin;
 
 
-
-
-    public static void save(Context context, Horario grupo) {
-                try {
-                    if(getIndex(grupo.getId(),context)!=null)
-                        DBManager.get(context).getGrupo().create(grupo);
-                    else
-                        DBManager.get(context).getGrupo().update(grupo);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        public static List<Horario> getArray(Context context) {
-            List<Horario> array = new ArrayList<Horario>();
-            try {
-                array = DBManager.get(context).getGrupo().queryForAll();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return array;
+    public static void save(Context context, Horario h) {
+        try {
+            if (getIndex(h.getId(), context) != null)
+                DBManager.get(context).getHorario().create(h);
+            else
+                DBManager.get(context).getHorario().update(h);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
 
-
-        public static Horario getIndex(int i,Context context)
-        {
-            try {
-                if(DBManager.get(context).getGrupo().queryForEq(ID,i).size() > 0)
-                {
-                    return DBManager.get(context).getGrupo().queryForEq(ID,i).get(0);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return null;
+    public static List<Horario> getArray(Context context) {
+        List<Horario> array = new ArrayList<Horario>();
+        try {
+            array = DBManager.get(context).getHorario().queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return array;
+    }
+
+
+    public static Horario getIndex(int index, Context context) {
+        try {
+            if (DBManager.get(context).getHorario().queryForEq(ID, index).size() > 0) {
+                return DBManager.get(context).getHorario().queryForEq(ID, index).get(0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
     public Integer getId() {
@@ -72,19 +75,36 @@ public class Horario {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+
+    public int getId_asignatura() {
+        return id_asignatura;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setId_asignatura(int id_asignatura) {
+        this.id_asignatura = id_asignatura;
     }
 
-    public String getCarrera() {
-        return carrera;
+    public String getDia() {
+        return dia;
     }
 
-    public void setCarrera(String carrera) {
-        this.carrera = carrera;
+    public void setDia(String dia) {
+        this.dia = dia;
+    }
+
+    public String getHora_inicio() {
+        return hora_inicio;
+    }
+
+    public void setHora_inicio(String hora_inicio) {
+        this.hora_inicio = hora_inicio;
+    }
+
+    public String getHora_fin() {
+        return hora_fin;
+    }
+
+    public void setHora_fin(String hora_fin) {
+        this.hora_fin = hora_fin;
     }
 }

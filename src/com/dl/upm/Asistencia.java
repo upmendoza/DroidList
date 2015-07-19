@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import com.dl.adapters.adapterGrupo;
 import com.dl.db.upm.DBAdapter;
 
 import java.util.ArrayList;

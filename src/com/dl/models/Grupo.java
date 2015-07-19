@@ -16,40 +16,33 @@ import java.util.List;
 public class Grupo {
     public static final String ID = "id";
     public static final String NOMBRE = "nombre";
-    public static final String AP_PAT = "appat";
-    public static final String AP_MAT = "apmat";
-    public static final String MATRICULA = "matricula";
-    public static final String EMAIL = "email";
-    public static final String ID_GRUPO = "id_grupo";
+    public static final String CARRERA = "appat";
+
     @DatabaseField(generatedId = true, columnName = ID)
     private Integer id;
     @DatabaseField(columnName = NOMBRE)
     private String nombre;
-    @DatabaseField(columnName = AP_PAT)
-    private String appat;
-    @DatabaseField(columnName = AP_MAT)
-    private String apmat;
-    @DatabaseField(columnName = MATRICULA)
-    private String matricula;
-    @DatabaseField(columnName = EMAIL)
-    private String email;
-    @DatabaseField(columnName = ID_GRUPO)
-    private Integer id_grupo;
+    @DatabaseField(columnName = CARRERA)
+    private String carrera;
 
 
 
-    public static void add(Context context, Grupo alumno) {
-            try {
-                DBManager.get(context).getAlumno().create(alumno);
-            } catch (SQLException e) {
-                e.printStackTrace();
+
+    public static void save(Context context, Grupo grupo) {
+                try {
+                    if(getIndex(grupo.getId(),context)!=null)
+                        DBManager.get(context).getGrupo().create(grupo);
+                    else
+                        DBManager.get(context).getGrupo().update(grupo);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-        }
 
         public static List<Grupo> getArray(Context context) {
             List<Grupo> array = new ArrayList<Grupo>();
             try {
-                array = DBManager.get(context).getAlumno().queryForAll();
+                array = DBManager.get(context).getGrupo().queryForAll();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -57,18 +50,19 @@ public class Grupo {
         }
 
 
-        public static Grupo getIndex(int i,Context context)
+        public static Grupo getIndex(int index,Context context)
         {
             try {
-                if(DBManager.get(context).getAlumno().queryForEq(ID,i).size() > 0)
+                if(DBManager.get(context).getGrupo().queryForEq(ID,index).size() > 0)
                 {
-                    return DBManager.get(context).getAlumno().queryForEq(ID,i).get(0);
+                    return DBManager.get(context).getGrupo().queryForEq(ID,index).get(0);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             return null;
         }
+
 
     public Integer getId() {
         return id;
@@ -86,43 +80,11 @@ public class Grupo {
         this.nombre = nombre;
     }
 
-    public String getAppat() {
-        return appat;
+    public String getCarrera() {
+        return carrera;
     }
 
-    public void setAppat(String appat) {
-        this.appat = appat;
-    }
-
-    public String getApmat() {
-        return apmat;
-    }
-
-    public void setApmat(String apmat) {
-        this.apmat = apmat;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getId_grupo() {
-        return id_grupo;
-    }
-
-    public void setId_grupo(Integer id_grupo) {
-        this.id_grupo = id_grupo;
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
     }
 }

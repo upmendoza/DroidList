@@ -16,34 +16,26 @@ import java.util.List;
 public class Asignatura {
     public static final String ID = "id";
     public static final String NOMBRE = "nombre";
-    public static final String AP_PAT = "appat";
-    public static final String AP_MAT = "apmat";
-    public static final String MATRICULA = "matricula";
-    public static final String EMAIL = "email";
     public static final String ID_GRUPO = "id_grupo";
+    public static final String ID_HORARIO = "id_horario";
     @DatabaseField(generatedId = true, columnName = ID)
     private Integer id;
     @DatabaseField(columnName = NOMBRE)
     private String nombre;
-    @DatabaseField(columnName = AP_PAT)
-    private String appat;
-    @DatabaseField(columnName = AP_MAT)
-    private String apmat;
-    @DatabaseField(columnName = MATRICULA)
-    private String matricula;
-    @DatabaseField(columnName = EMAIL)
-    private String email;
     @DatabaseField(columnName = ID_GRUPO)
-    private Integer id_grupo;
+    private int id_grupo;
+    @DatabaseField(columnName = ID_HORARIO)
+    private int id_horario;
 
 
 
-    public static void save(Context context, Asignatura alumno) {
+
+    public static void save(Context context, Asignatura a) {
             try {
-                if(getIndex(alumno.getId(),context)!=null)
-                    DBManager.get(context).getAlumno().create(alumno);
+                if(getIndex(a.getId(),context)!=null)
+                    DBManager.get(context).getAsignatura().create(a);
                 else
-                    DBManager.get(context).getAlumno().update(alumno);
+                    DBManager.get(context).getAsignatura().update(a);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -52,7 +44,7 @@ public class Asignatura {
         public static List<Asignatura> getArray(Context context) {
             List<Asignatura> array = new ArrayList<Asignatura>();
             try {
-                array = DBManager.get(context).getAlumno().queryForAll();
+                array = DBManager.get(context).getAsignatura().queryForAll();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -60,12 +52,12 @@ public class Asignatura {
         }
 
 
-        public static Asignatura getIndex(int i,Context context)
+        public static Asignatura getIndex(int index,Context context)
         {
             try {
-                if(DBManager.get(context).getAlumno().queryForEq(ID,i).size() > 0)
+                if(DBManager.get(context).getAsignatura().queryForEq(ID,index).size() > 0)
                 {
-                    return DBManager.get(context).getAlumno().queryForEq(ID,i).get(0);
+                    return DBManager.get(context).getAsignatura().queryForEq(ID,index).get(0);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -89,43 +81,19 @@ public class Asignatura {
         this.nombre = nombre;
     }
 
-    public String getAppat() {
-        return appat;
-    }
-
-    public void setAppat(String appat) {
-        this.appat = appat;
-    }
-
-    public String getApmat() {
-        return apmat;
-    }
-
-    public void setApmat(String apmat) {
-        this.apmat = apmat;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public Integer getId_grupo() {
         return id_grupo;
     }
 
     public void setId_grupo(Integer id_grupo) {
         this.id_grupo = id_grupo;
+    }
+
+    public int getId_horario() {
+        return id_horario;
+    }
+
+    public void setId_horario(int id_horario) {
+        this.id_horario = id_horario;
     }
 }

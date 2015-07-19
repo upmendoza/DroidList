@@ -16,29 +16,29 @@ import java.util.List;
 public class Incidencia {
     public static final String ID = "id";
     public static final String ID_ASIGNATURA = "id_asignatura";
-    public static final String DIA = "dia";
-    public static final String HORA_INICIO = "hora_inicio";
-    public static final String HORA_FIN = "hora_fin";
+    public static final String ID_ALUMNO = "id_alumno";
+    public static final String ESTADO = "estado";
+    public static final String FECHA = "fecha";
 
 
     @DatabaseField(generatedId = true, columnName = ID)
     private Integer id;
     @DatabaseField(columnName = ID_ASIGNATURA)
     private int id_asignatura;
-    @DatabaseField(columnName = DIA)
-    private String dia;
-    @DatabaseField(columnName = HORA_INICIO)
-    private String hora_inicio;
-    @DatabaseField(columnName = HORA_FIN)
-    private String hora_fin;
+    @DatabaseField(columnName = ID_ALUMNO)
+    private int id_alumno;
+    @DatabaseField(columnName = ESTADO)
+    private String estado;
+    @DatabaseField(columnName = FECHA)
+    private String fecha;
 
 
-    public static void save(Context context, Incidencia h) {
+    public static void save(Context context, Incidencia i) {
         try {
-            if (getIndex(h.getId(), context) != null)
-                DBManager.get(context).getHorario().create(h);
+            if (getIndex(i.getId(), context) != null)
+                DBManager.get(context).getIncidencia().create(i);
             else
-                DBManager.get(context).getHorario().update(h);
+                DBManager.get(context).getIncidencia().update(i);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class Incidencia {
     public static List<Incidencia> getArray(Context context) {
         List<Incidencia> array = new ArrayList<Incidencia>();
         try {
-            array = DBManager.get(context).getHorario().queryForAll();
+            array = DBManager.get(context).getIncidencia().queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -55,10 +55,10 @@ public class Incidencia {
     }
 
 
-    public static Incidencia getIndex(int i, Context context) {
+    public static Incidencia getIndex(int index, Context context) {
         try {
-            if (DBManager.get(context).getHorario().queryForEq(ID, i).size() > 0) {
-                return DBManager.get(context).getHorario().queryForEq(ID, i).get(0);
+            if (DBManager.get(context).getIncidencia().queryForEq(ID, index).size() > 0) {
+                return DBManager.get(context).getIncidencia().queryForEq(ID, index).get(0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,7 +75,6 @@ public class Incidencia {
         this.id = id;
     }
 
-
     public int getId_asignatura() {
         return id_asignatura;
     }
@@ -84,27 +83,28 @@ public class Incidencia {
         this.id_asignatura = id_asignatura;
     }
 
-    public String getDia() {
-        return dia;
+
+    public int getId_alumno() {
+        return id_alumno;
     }
 
-    public void setDia(String dia) {
-        this.dia = dia;
+    public void setId_alumno(int id_alumno) {
+        this.id_alumno = id_alumno;
     }
 
-    public String getHora_inicio() {
-        return hora_inicio;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setHora_inicio(String hora_inicio) {
-        this.hora_inicio = hora_inicio;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
-    public String getHora_fin() {
-        return hora_fin;
+    public String getFecha() {
+        return fecha;
     }
 
-    public void setHora_fin(String hora_fin) {
-        this.hora_fin = hora_fin;
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 }
